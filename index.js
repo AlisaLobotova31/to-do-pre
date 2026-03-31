@@ -38,11 +38,31 @@ function createItem(item) {
 	const template = document.getElementById("to-do__item-template");
 	const clone = template.content.querySelector(".to-do__item").cloneNode(true);
   const textElement = clone.querySelector(".to-do__item-text");
+	const upButton = clone.querySelector(".to-do__item-button_type_up");
+  const downButton = clone.querySelector(".to-do__item-button_type_down");
   const deleteButton = clone.querySelector(".to-do__item-button_type_delete");
   const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
   const editButton = clone.querySelector(".to-do__item-button_type_edit");
 
 	textElement.textContent = item;
+
+	upButton.addEventListener("click", () => {
+		const prevElement = clone.previousElementSibling;
+		if (prevElement) {
+			prevElement.before(clone);
+			items = getTasksFromDOM();
+			saveTasks(items);
+		}
+	});
+
+	downButton.addEventListener("click", () => {
+		const nextElement = clone.nextElementSibling;
+		if (nextElement) {
+			nextElement.after(clone);
+			items = getTasksFromDOM();
+			saveTasks(items);
+		}
+	});
 
 	deleteButton.addEventListener("click", () => {
 		clone.remove();
